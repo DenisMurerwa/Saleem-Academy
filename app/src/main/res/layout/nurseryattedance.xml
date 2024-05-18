@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:dateTextAppearance="@style/CalendarDateText"
+        android:weekDayTextAppearance="@style/CalendarWeekDayText" />
+
+    <Button
+        android:id="@+id/buttonDownload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Download"
+        android:layout_below="@id/calendarView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+    <!-- List of Students TextView -->
+
+    <TextView
+        android:id="@+id/tvRemarks"
+        android:layout_width="304dp"
+        android:layout_height="32dp"
+        android:layout_alignBottom="@+id/buttonDownload"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="83dp"
+        android:layout_marginBottom="39dp"
+        android:text="Remarks"
+        android:textColor="@color/app_background"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/tvAssignments"
+        android:layout_width="107dp"
+        android:layout_height="37dp"
+        android:layout_alignBottom="@+id/buttonDownload"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="-239dp"
+        android:layout_marginEnd="281dp"
+        android:layout_marginBottom="21dp"
+        android:layout_toEndOf="@+id/buttonDownload"
+        android:textColor="@color/app_background"
+        android:textSize="11sp"
+        android:text="Assignments" />
+
+    <TextView
+        android:id="@+id/textViewListOfStudents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="List of Students"
+        android:textColor="@color/app_background"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:layout_below="@id/buttonDownload"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+    <!-- RelativeLayout to contain ScrollView -->
+    <RelativeLayout
+        android:id="@+id/relativeLayoutScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewListOfStudents"
+        android:layout_above="@id/buttonSave">
+
+        <!-- ScrollView to make the list scrollable -->
+        <ScrollView
+            android:id="@+id/scrollViewStudents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EAE7DF"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:paddingBottom="32dp"
+            android:isScrollContainer="true">
+
+            <!-- Linear layout to hold the list of students -->
+            <LinearLayout
+                android:id="@+id/linearStudentList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"/>
+
+</RelativeLayout>

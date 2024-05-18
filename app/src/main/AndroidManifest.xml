@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/img_5"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/img_5"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SaleemAcademy"
+        tools:targetApi="31">
+
+          <meta-data
+              android:name="com.google.android.gms.ads.APPLICATION_ID"
+              android:value="ca-app-pub-5900312384253634~6330156310" />
+
+            <activity
+                android:name=".SplashActivity"
+                android:theme="@style/SplashscreenTheme"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            </activity>
+        <activity
+        android:name=".MainActivity"
+        android:exported="true">
+        </activity>
+        <activity
+            android:name="SignUp"
+            android:exported="false"/>
+          <activity
+              android:name=".Teacherslogin"
+              android:exported="false"/>
+        <activity
+            android:name="Parentlogin"
+            android:exported="false"/>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.saleemacademy.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+          <activity
+              android:name=".Nursery"
+              android:exported="false"/>
+          <activity
+              android:name=".Grade1"
+              android:exported="false"/>
+          <activity
+              android:name=".Grade2"
+              android:exported="false"/>
+          <activity
+              android:name=".Grade3"
+              android:exported="false"/>
+          <activity
+              android:name=".Grade4"
+              android:exported="false"/>
+          <activity
+              android:name=".Grade5"
+              android:exported="false"/>
+          <activity
+              android:name=".Grade6"
+              android:exported="false"/>
+          <activity
+              android:name=".Grade7"
+              android:exported="false"/>
+          <activity
+              android:name=".Grade8"
+              android:exported="false"/>
+          <activity
+              android:name=".NurseryMarks"
+              android:exported="false"/>
+          <activity
+              android:name=".NurseryAttendance"
+              android:windowSoftInputMode="adjustResize"
+             />
+        <activity
+            android:name=".NurseryStudents"
+            android:exported="false" />
+        <activity
+            android:name=".StudentsProgress"
+            android:exported="false" />
+        <activity android:name=".Assignments"
+            android:exported="false"/>
+        <activity android:name=".Remarks"
+            android:exported="false"/>
+        <activity android:name=".Admin"
+            android:exported="false"/>
+        <activity android:name=".Fees"
+            android:exported="false"/>
+        <activity android:name=".Events"
+            android:exported="false"/>
+        <activity android:name=".All"
+            android:exported="false"/>
+        <activity android:name=".PastPapers"
+            android:exported="false"/>
+        <activity android:name=".AssignEmails"
+            android:exported="false"/>
+        <activity android:name=".AddContacts"
+            android:exported="false"/>
+        <activity android:name=".UploadPastPapers"
+            android:exported="false"/>
+        <activity android:name=".UpdateEvents"
+            android:exported="false"/>
+        <activity android:name=".UpdateNotes"
+            android:exported="false"/>
+
+      <meta-data
+              android:name="com.bumptech.glide.integration.okhttp3.OkHttpLibraryGlideModule"
+              android:value="GlideModule" />
+
+
+    </application>
+
+</manifest>

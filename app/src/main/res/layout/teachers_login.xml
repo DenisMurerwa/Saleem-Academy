@@ -1,0 +1,102 @@
+
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_select_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Your Class"
+            android:layout_gravity="center"
+            android:textColor="@color/app_background"
+            android:textStyle="bold"
+            android:fontFamily="cursive"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/background_oval">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="119dp"
+                android:layout_height="88dp"
+                android:src="@drawable/ic_back_foreground"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btn_nursery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nursery"
+            android:layout_margin="16dp"/>
+
+        <Button
+            android:id="@+id/btn_grade1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grade 1"
+            android:layout_margin="16dp"/>
+
+        <Button
+            android:id="@+id/btn_grade2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grade 2"
+            android:layout_margin="16dp"/>
+
+        <Button
+            android:id="@+id/btn_grade3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grade 3"
+            android:layout_margin="16dp"/>
+
+        <Button
+            android:id="@+id/btn_grade4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grade 4"
+            android:layout_margin="16dp"/>
+
+        <Button
+            android:id="@+id/btn_grade5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grade 5"
+            android:layout_margin="16dp"/>
+        <Button
+            android:id="@+id/btn_grade6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grade 6"
+            android:layout_margin="16dp"/>
+        <Button
+            android:id="@+id/btn_grade7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grade 7"
+            android:layout_margin="16dp"/>
+
+        <Button
+            android:id="@+id/btn_grade8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Grade 8"
+            android:layout_margin="16dp"/>
+
+    </LinearLayout>
+</ScrollView>

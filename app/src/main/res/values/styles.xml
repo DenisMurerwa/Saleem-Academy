@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Style for the date text in CalendarView -->
+    <style name="CalendarDateText">
+        <item name="android:textColor">#000000</item> <!-- Change text color to black -->
+        <item name="android:textSize">14sp</item> <!-- Change text size to 14sp -->
+        <!-- Add any other desired attributes here -->
+    </style>
+
+    <!-- Style for the week day text in CalendarView -->
+    <style name="CalendarWeekDayText">
+        <item name="android:textColor">#000000</item> <!-- Change text color to black -->
+        <item name="android:textSize">16sp</item> <!-- Change text size to 16sp -->
+        <!-- Add any other desired attributes here -->
+    </style>
+</resources>

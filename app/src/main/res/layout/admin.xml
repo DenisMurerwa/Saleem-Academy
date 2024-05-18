@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_blue">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/textHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Admin Dashboard"
+        android:textColor="@color/app_background"
+        android:textSize="24sp" />
+
+    <!-- Assign Emails Section -->
+    <LinearLayout
+        android:id="@+id/layoutAssignEmails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textHeader"
+        android:orientation="horizontal"
+        android:background="@drawable/section_background"
+        android:padding="16dp"
+        android:layout_margin="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:text="Assign Emails"
+            android:textColor="@color/app_background"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <!-- Upload Past Papers Section -->
+    <LinearLayout
+        android:id="@+id/layoutUploadPastPapers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutAssignEmails"
+        android:orientation="horizontal"
+        android:background="@drawable/section_background"
+        android:padding="16dp"
+        android:layout_margin="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:text="Upload Past Papers"
+            android:textColor="@color/app_background"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <!-- Update Events Section -->
+    <LinearLayout
+        android:id="@+id/layoutUpdateEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutUploadPastPapers"
+        android:orientation="horizontal"
+        android:background="@drawable/section_background"
+        android:padding="16dp"
+        android:layout_margin="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:text="Update Events"
+            android:textColor="@color/app_background"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <!-- Update Notes Section -->
+    <LinearLayout
+        android:id="@+id/layoutUpdateNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutUpdateEvents"
+        android:orientation="horizontal"
+        android:background="@drawable/section_background"
+        android:padding="16dp"
+        android:layout_margin="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:text="Update Notes"
+            android:textColor="@color/app_background"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <!-- Add Contacts Section -->
+    <LinearLayout
+        android:id="@+id/layoutAddContacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutUpdateNotes"
+        android:orientation="horizontal"
+        android:background="@drawable/section_background"
+        android:padding="16dp"
+        android:layout_margin="16dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:text="Add Contacts"
+            android:textColor="@color/app_background"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

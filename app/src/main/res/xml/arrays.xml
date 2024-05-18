@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- arrays.xml -->
+<resources>
+    <string-array name="year_array">
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <!-- Add more years as needed -->
+    </string-array>
+
+    <string-array name="term_array">
+        <item>Term 1</item>
+        <item>Term 2</item>
+        <item>Term 3</item>
+        <!-- Add more terms as needed -->
+    </string-array>
+</resources>

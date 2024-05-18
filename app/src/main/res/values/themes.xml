@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.SaleemAcademy" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/app_background</item>
+        <item name="colorPrimaryDark">#EDCF73</item>
+        <item name="colorAccent">@color/app_background</item>
+    </style>
+
+    <style name="Theme.SaleemAcademy" parent="Base.Theme.SaleemAcademy" />
+    <style name="SplashscreenTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/app_background</item>
+        <item name="colorPrimaryDark">#EDCF73</item>
+        <item name="colorAccent">@color/app_background</item>
+    </style>
+</resources>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "593494222215",
+    "project_id": "saleem-academy-login",
+    "storage_bucket": "saleem-academy-login.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593494222215:android:aba0f020b81d4616f75f22",
+        "android_client_info": {
+          "package_name": "com.example.saleemacademy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDgDa_KCsb3fNUCbUGIRciPatBaSQf9u0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
