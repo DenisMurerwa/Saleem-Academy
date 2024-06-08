@@ -43,13 +43,12 @@ class Parentlogin : AppCompatActivity() , NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_Home -> replaceFragment(HomeFragment())
-            R.id.nav_Contact -> replaceFragment(ContactsFragment())
             R.id.nav_Feedback -> replaceFragment(FeedbackFragment())
             R.id.nav_Teachers_Login -> replaceFragment(TeachersLoginFragment
                 ())
             R.id.nav_Students_Login -> replaceFragment(StudentProgressFragment())
             R.id.nav_Notes -> replaceFragment(NotesFragment())
-            R.id.nav_Exit -> Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show()
+            R.id.nav_Exit -> replaceFragment(LogoutFragment())
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true

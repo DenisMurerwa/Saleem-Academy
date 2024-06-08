@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="years">
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+    </string-array>
+
+    <string-array name="terms">
+        <item>Term 1</item>
+        <item>Term 2</item>
+        <item>Term 3</item>
+    </string-array>
+
+    <string-array name="exam_types">
+        <item>Opener Exam</item>
+        <item>Midterm Exam</item>
+        <item>Endterm Exam</item>
+    </string-array>
+</resources>

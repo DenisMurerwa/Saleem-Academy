@@ -44,17 +44,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class NurseryAttendance: AppCompatActivity() {
-
+class Grade1Attendance: AppCompatActivity() {
     private lateinit var storage: FirebaseStorage
     private lateinit var storageRef: StorageReference
     private lateinit var selectedTerm: String
     private lateinit var selectedDate: String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.nurseryattedance)
-
+        setContentView(R.layout.grade1_attendance)
         storage = FirebaseStorage.getInstance()
         storageRef = FirebaseStorage.getInstance().reference.child("csv/student_data.csv")
         val tvAssignment = findViewById<TextView>(R.id.tvAssignments)
@@ -93,7 +90,7 @@ class NurseryAttendance: AppCompatActivity() {
         btnLoad.setOnClickListener {
             val selectedYear = spinnerYear.selectedItem.toString()
             selectedTerm = spinnerTerm.selectedItem.toString()
-            val path = "NurseryStudents_${selectedYear}_${selectedTerm}.csv"
+            val path = "Grade1Students_${selectedYear}_${selectedTerm}.csv"
             loadFileFromStorage(path)
             dialog.dismiss()
         }
@@ -108,12 +105,12 @@ class NurseryAttendance: AppCompatActivity() {
     private fun loadFileFromStorage(path: String) {
         storageRef.child(path).getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
             val studentsData = String(bytes)
-            Log.d("NurseryAttendance", "Students data loaded successfully: $studentsData")
+            Log.d("Grade1Attendance", "Students data loaded successfully: $studentsData")
             val studentLines = studentsData.split("\n").map { it.trim() }
             replaceStudentNames(studentLines)
             uncheckAllCheckboxes()
         }.addOnFailureListener {
-            Log.e("NurseryAttendance", "Error loading file from storage: ${it.message}")
+            Log.e("Grade1Attendance", "Error loading file from storage: ${it.message}")
         }
     }
 
@@ -155,7 +152,7 @@ class NurseryAttendance: AppCompatActivity() {
 
         if (studentDataString.isNotEmpty()) {
             selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            val path = "NurseryAttendance_${selectedTerm}_$selectedDate.csv" // Include selected term and date
+            val path = "Grade1Attendance_${selectedTerm}_$selectedDate.csv" // Include selected term and date
             val attendanceRef = storageRef.child(path)
 
             try {
@@ -231,7 +228,7 @@ class NurseryAttendance: AppCompatActivity() {
             selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(year, month, day))
 
             // Load the student data for the selected date and term
-            val path = "NurseryAttendance_${selectedTerm}_$selectedDate.csv"
+            val path = "Grade1Attendance_${selectedTerm}_$selectedDate.csv"
             Log.d("NurseryAttendance", "Loading file from path: $path")
             loadFileFromStorageForPdf(path)
             dialog.dismiss()
@@ -260,7 +257,7 @@ class NurseryAttendance: AppCompatActivity() {
         term: String,
         selectedDate: String
     ) {
-        val pdfFileName = "NurseryAttendance_${term}_$selectedDate.pdf"
+        val pdfFileName = "Grade1Attendance_${term}_$selectedDate.pdf"
         val downloadsDir = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
         val pdfFile = File(downloadsDir, pdfFileName)
         val outputStream = FileOutputStream(pdfFile)
@@ -271,7 +268,7 @@ class NurseryAttendance: AppCompatActivity() {
         pdfDocument.defaultPageSize = PageSize.A4
         document.setMargins(20f, 20f, 20f, 20f)
 
-        val header = Paragraph("Nursery Attendance - Term: $term, Date: $selectedDate")
+        val header = Paragraph("Grade1 Attendance - Term: $term, Date: $selectedDate")
             .setBold()
             .setFontSize(18f)
             .setTextAlignment(TextAlignment.CENTER)
@@ -314,7 +311,7 @@ class NurseryAttendance: AppCompatActivity() {
 
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification_foreground)
-            .setContentTitle("Nursery Attendance")
+            .setContentTitle("Grade 1 Attendance")
             .setContentText("Attendance PDF created: $pdfFileName")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
@@ -364,7 +361,7 @@ class NurseryAttendance: AppCompatActivity() {
     private fun saveSelectedSubjects(subjects: List<String>) {
         if (subjects.isNotEmpty()) {
             selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-            val path = "NurseryAssignments_$selectedDate.csv"
+            val path = "Grade1Assignments_$selectedDate.csv"
             val assignmentsRef = storageRef.child(path)
 
             val subjectData = subjects.joinToString("\n") { it }

@@ -3,7 +3,6 @@ package com.example.saleemacademy
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,7 +10,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputType
 import android.util.Log
@@ -37,7 +35,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.itextpdf.io.IOException
 import com.itextpdf.kernel.colors.Color
 import com.itextpdf.kernel.colors.DeviceRgb
 import com.itextpdf.kernel.geom.PageSize
@@ -53,13 +50,11 @@ import com.itextpdf.layout.property.UnitValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.slf4j.MDC.put
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStream
 import org.w3c.dom.Document as Document1
 
-class NurseryMarks: AppCompatActivity() {
+class Grade1Marks:AppCompatActivity() {
     private lateinit var btnLoadStudents: Button
     private lateinit var btnDownloadList: Button
     private lateinit var btnSave : Button
@@ -69,11 +64,9 @@ class NurseryMarks: AppCompatActivity() {
     private lateinit var tableLayout: TableLayout
     private lateinit var storage: FirebaseStorage
     private lateinit var storageRef: StorageReference
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.nurserymarks)
-
+        setContentView(R.layout.grade1_marks)
         btnLoadStudents = findViewById(R.id.btnLoadStudents)
         btnDownloadList = findViewById(R.id.btnDownload)
         btnSave  = findViewById(R.id.btnSave)
@@ -99,46 +92,8 @@ class NurseryMarks: AppCompatActivity() {
             showDownloadDialog()
         }
 
-        requestStoragePermission()
-        createNotificationChannel()
-    }
-    private fun requestStoragePermission() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    WRITE_EXTERNAL_STORAGE_REQUEST_CODE
-                )
-            }
-        } else {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                    WRITE_EXTERNAL_STORAGE_REQUEST_CODE
-                )
-            }
-        }
-    }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted
-            } else {
-                Toast.makeText(this, "Storage permission is required to download data", Toast.LENGTH_SHORT).show()
-            }
-        }
+        createNotificationChannel()
     }
 
 
@@ -147,7 +102,7 @@ class NurseryMarks: AppCompatActivity() {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
             val importance = NotificationManager.IMPORTANCE_LOW
-            val channel = NotificationChannel(NurseryMarks.CHANNEL_ID, name, importance).apply {
+            val channel = NotificationChannel(Grade1Marks.CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
 
@@ -155,6 +110,7 @@ class NurseryMarks: AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
     }
+
 
 
     private fun showExamTypeDialog(year: String, term: String, mode: DialogMode) {
@@ -215,7 +171,7 @@ class NurseryMarks: AppCompatActivity() {
     }
 
     private fun downloadStudents(year: String, term: String, examType: String) {
-        val fileName = "${javaClass.simpleName}_$year" + "_$term" + "_$examType.csv"
+        val fileName = "Grade1Marks_$year" + "_$term" + "_$examType.csv"
         val fileRef = storageRef.child(fileName)
 
         fileRef.getBytes(Long.MAX_VALUE)
@@ -230,173 +186,146 @@ class NurseryMarks: AppCompatActivity() {
 
 
     private fun createAndSavePdf(year: String, term: String, examType: String, data: String) {
-        requestStoragePermission()
 
-        val pdfFileName = "${javaClass.simpleName}_$year" + "_$term" + "_$examType.pdf"
-        val pdfFilePath: String
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            // Use MediaStore for Android 10 and above
-            val values = ContentValues().apply {
-                put(MediaStore.MediaColumns.DISPLAY_NAME, pdfFileName)
-                put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
-                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+        val pdfFileName = "Grade1Marks_$year" + "_$term" + "_$examType.pdf"
+        val pdfFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + pdfFileName
+        Log.d("PDF", "PDF File Path: $pdfFilePath")
+
+        try {
+            val outputStream = FileOutputStream(pdfFilePath)
+            val writer = PdfWriter(outputStream)
+            val pdfDocument = PdfDocument(writer)
+            val document = Document(pdfDocument, PageSize.A4)
+
+            val appBackgroundColor = DeviceRgb(255, 193, 7) // Replace with your color code (FFC107)
+            val textColor: Color = DeviceRgb(255, 193, 7)// Color for text
+
+            val header = Paragraph("MERU SALEEM ACADEMY").setBold().setFontSize(18f).setMarginBottom(20f).setTextAlignment(TextAlignment.CENTER).setFontColor(textColor)
+            document.add(header)
+
+            val className = Paragraph("Grade 1 Class").setBold().setFontSize(16f).setMarginBottom(10f).setTextAlignment(TextAlignment.CENTER).setFontColor(textColor)
+            document.add(className)
+
+            val yearTermExamType = "Year: $year, Term: $term, Exam Type: $examType"
+            val headerInfo = Paragraph(yearTermExamType).setBold().setFontSize(14f).setMarginBottom(20f).setTextAlignment(TextAlignment.CENTER).setFontColor(textColor)
+            document.add(headerInfo)
+
+            val studentList = Paragraph("Students Marks").setBold().setFontSize(14f).setMarginBottom(20f).setTextAlignment(TextAlignment.CENTER).setFontColor(textColor)
+            document.add(studentList)
+
+            val table = Table(UnitValue.createPercentArray(floatArrayOf(8f, 12f, 8f, 8f, 8f, 8f, 8f, 8f, 8f))).useAllAvailableWidth()
+            table.setHorizontalAlignment(HorizontalAlignment.CENTER)
+
+            val snoTitleCell = Cell().add(Paragraph("S.No")).setBold().setBackgroundColor(appBackgroundColor)
+            table.addCell(snoTitleCell)
+
+            val nameTitleCell = Cell().add(Paragraph("Student Name")).setBold().setBackgroundColor(appBackgroundColor)
+            table.addCell(nameTitleCell)
+
+            val englishTitleCell = Cell().add(Paragraph("English")).setBold().setBackgroundColor(appBackgroundColor)
+            table.addCell(englishTitleCell)
+
+            val kiswahiliTitleCell = Cell().add(Paragraph("Kiswahili")).setBold().setBackgroundColor(appBackgroundColor)
+            table.addCell(kiswahiliTitleCell)
+
+            val mathTitleCell = Cell().add(Paragraph("Maths")).setBold().setBackgroundColor(appBackgroundColor)
+            table.addCell(mathTitleCell)
+
+            val scienceTitleCell = Cell().add(Paragraph("Science")).setBold().setBackgroundColor(appBackgroundColor)
+            table.addCell(scienceTitleCell)
+
+            val socialStudiesTitleCell = Cell().add(Paragraph("Social Studies")).setBold().setBackgroundColor(appBackgroundColor)
+            table.addCell(socialStudiesTitleCell)
+
+            val creTitleCell = Cell().add(Paragraph("CRE")).setBold().setBackgroundColor(appBackgroundColor)
+            table.addCell(creTitleCell)
+
+            val totalTitleCell = Cell().add(Paragraph("TOTAL")).setBold().setBackgroundColor(appBackgroundColor)
+            table.addCell(totalTitleCell)
+
+            val rows = data.split("\n")
+
+            for ((index, rowString) in rows.withIndex()) {
+                if (index == 0) continue // Skip first row
+
+                val columns = rowString.split(",")
+                if (columns.size >= 8) {
+                    val name = columns[0].trim()
+                    val english = columns[1].trim()
+                    val kiswahili = columns[2].trim()
+                    val math = columns[3].trim()
+                    val science = columns[4].trim()
+                    val socialStudies = columns[5].trim()
+                    val cre = columns[6].trim()
+                    val total = columns[7].trim()
+
+                    val numberedName = "${index}"
+
+                    val snoCell = Cell().add(Paragraph(numberedName))
+                    val nameCell = Cell().add(Paragraph(name))
+                    val englishCell = Cell().add(Paragraph(english))
+                    val kiswahiliCell = Cell().add(Paragraph(kiswahili))
+                    val mathCell = Cell().add(Paragraph(math))
+                    val scienceCell = Cell().add(Paragraph(science))
+                    val socialStudiesCell = Cell().add(Paragraph(socialStudies))
+                    val creCell = Cell().add(Paragraph(cre))
+                    val totalCell = Cell().add(Paragraph(total))
+
+                    table.addCell(snoCell)
+                    table.addCell(nameCell)
+                    table.addCell(englishCell)
+                    table.addCell(kiswahiliCell)
+                    table.addCell(mathCell)
+                    table.addCell(scienceCell)
+                    table.addCell(socialStudiesCell)
+                    table.addCell(creCell)
+                    table.addCell(totalCell)
+                }
             }
-            val resolver = contentResolver
-            val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values)
 
-            if (uri != null) {
-                pdfFilePath = uri.toString()
-                try {
-                    resolver.openOutputStream(uri)?.use { outputStream ->
-                        generatePdf(outputStream, year, term, examType, data)
-                        notifyDownloadComplete(pdfFileName, uri)
+            document.add(table)
+
+            val footer = Paragraph("Powered by D_M tech Solutions\nEmail us: murerwadenis55@gmail.com").setFontSize(10f).setTextAlignment(TextAlignment.CENTER).setFontColor(textColor)
+            document.showTextAligned(footer, PageSize.A4.width / 2, document.bottomMargin + 10, TextAlignment.CENTER)
+
+            document.close()
+
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Downloading PDF")
+                .setContentText("Download in progress")
+                .setSmallIcon(R.drawable.ic_download_foreground)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+
+            val notificationId = 1
+            notificationManager.notify(notificationId, builder.build())
+
+            Toast.makeText(this, "Download Started.....", Toast.LENGTH_SHORT).show()
+
+            val file = File(pdfFilePath)
+
+            builder.setContentTitle("PDF Downloaded")
+                .setContentText("Download complete")
+                .setProgress(0, 0, false)
+                .setOngoing(false)
+                .setAutoCancel(true)
+                .setContentIntent(PendingIntent.getActivity(this, 0, Intent(Intent.ACTION_VIEW).apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        this.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        this.setDataAndType(FileProvider.getUriForFile(this@Grade1Marks, applicationContext.packageName + ".provider", file), "application/pdf")
+                    } else {
+                        this.setDataAndType(Uri.fromFile(file), "application/pdf")
                     }
-                } catch (e: Exception) {
-                    Log.e("PDF", "Error saving PDF: ${e.message}")
-                    Toast.makeText(this, "Failed to save PDF: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Log.e("PDF", "Failed to create MediaStore entry")
-                Toast.makeText(this, "Failed to save PDF", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            // Use traditional file saving for Android versions below 10
-            pdfFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + pdfFileName
-            Log.d("PDF", "PDF File Path: $pdfFilePath")
-            try {
-                val outputStream = FileOutputStream(pdfFilePath)
-                generatePdf(outputStream, year, term, examType, data)
-                notifyDownloadComplete(pdfFileName, Uri.fromFile(File(pdfFilePath)))
-            } catch (e: Exception) {
-                Log.e("PDF", "Error saving PDF: ${e.message}")
-                Toast.makeText(this, "Failed to save PDF: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
+                }, PendingIntent.FLAG_UPDATE_CURRENT))
+
+            notificationManager.notify(notificationId, builder.build())
+
+        } catch (e: Exception) {
+            Log.e("PDF", "Error saving PDF: ${e.message}")
+            Toast.makeText(this, "Failed to save PDF: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
-
-    private fun generatePdf(outputStream: OutputStream, year: String, term: String, examType: String, data: String) {
-        val writer = PdfWriter(outputStream)
-        val pdfDocument = PdfDocument(writer)
-        val document = Document(pdfDocument, PageSize.A4)
-
-        val appBackgroundColor = DeviceRgb(255, 193, 7) // Replace with your color code (FFC107)
-        val textColor: Color = DeviceRgb(255, 193, 7)// Color for text
-
-        val header = Paragraph("MERU SALEEM ACADEMY").setBold().setFontSize(18f).setMarginBottom(20f).setTextAlignment(TextAlignment.CENTER).setFontColor(textColor)
-        document.add(header)
-
-        val className = Paragraph("Nursery Class").setBold().setFontSize(16f).setMarginBottom(10f).setTextAlignment(TextAlignment.CENTER).setFontColor(textColor)
-        document.add(className)
-
-        val yearTermExamType = "Year: $year, Term: $term, Exam Type: $examType"
-        val headerInfo = Paragraph(yearTermExamType).setBold().setFontSize(14f).setMarginBottom(20f).setTextAlignment(TextAlignment.CENTER).setFontColor(textColor)
-        document.add(headerInfo)
-
-        val studentList = Paragraph("Students Marks").setBold().setFontSize(14f).setMarginBottom(20f).setTextAlignment(TextAlignment.CENTER).setFontColor(textColor)
-        document.add(studentList)
-
-        val table = Table(UnitValue.createPercentArray(floatArrayOf(8f, 12f, 8f, 8f, 8f, 8f, 8f, 8f, 8f))).useAllAvailableWidth()
-        table.setHorizontalAlignment(HorizontalAlignment.CENTER)
-
-        val snoTitleCell = Cell().add(Paragraph("S.No")).setBold().setBackgroundColor(appBackgroundColor)
-        table.addCell(snoTitleCell)
-
-        val nameTitleCell = Cell().add(Paragraph("Student Name")).setBold().setBackgroundColor(appBackgroundColor)
-        table.addCell(nameTitleCell)
-
-        val englishTitleCell = Cell().add(Paragraph("English")).setBold().setBackgroundColor(appBackgroundColor)
-        table.addCell(englishTitleCell)
-
-        val kiswahiliTitleCell = Cell().add(Paragraph("Kiswahili")).setBold().setBackgroundColor(appBackgroundColor)
-        table.addCell(kiswahiliTitleCell)
-
-        val mathTitleCell = Cell().add(Paragraph("Maths")).setBold().setBackgroundColor(appBackgroundColor)
-        table.addCell(mathTitleCell)
-
-        val scienceTitleCell = Cell().add(Paragraph("Science")).setBold().setBackgroundColor(appBackgroundColor)
-        table.addCell(scienceTitleCell)
-
-        val socialStudiesTitleCell = Cell().add(Paragraph("Social Studies")).setBold().setBackgroundColor(appBackgroundColor)
-        table.addCell(socialStudiesTitleCell)
-
-        val creTitleCell = Cell().add(Paragraph("CRE")).setBold().setBackgroundColor(appBackgroundColor)
-        table.addCell(creTitleCell)
-
-        val totalTitleCell = Cell().add(Paragraph("TOTAL")).setBold().setBackgroundColor(appBackgroundColor)
-        table.addCell(totalTitleCell)
-
-        val rows = data.split("\n")
-
-        for ((index, rowString) in rows.withIndex()) {
-            if (index == 0) continue // Skip first row
-
-            val columns = rowString.split(",")
-            if (columns.size >= 8) {
-                val name = columns[0].trim()
-                val english = columns[1].trim()
-                val kiswahili = columns[2].trim()
-                val math = columns[3].trim()
-                val science = columns[4].trim()
-                val socialStudies = columns[5].trim()
-                val cre = columns[6].trim()
-                val total = columns[7].trim()
-
-                val numberedName = "${index}"
-
-                val snoCell = Cell().add(Paragraph(numberedName))
-                val nameCell = Cell().add(Paragraph(name))
-                val englishCell = Cell().add(Paragraph(english))
-                val kiswahiliCell = Cell().add(Paragraph(kiswahili))
-                val mathCell = Cell().add(Paragraph(math))
-                val scienceCell = Cell().add(Paragraph(science))
-                val socialStudiesCell = Cell().add(Paragraph(socialStudies))
-                val creCell = Cell().add(Paragraph(cre))
-                val totalCell = Cell().add(Paragraph(total))
-
-                table.addCell(snoCell)
-                table.addCell(nameCell)
-                table.addCell(englishCell)
-                table.addCell(kiswahiliCell)
-                table.addCell(mathCell)
-                table.addCell(scienceCell)
-                table.addCell(socialStudiesCell)
-                table.addCell(creCell)
-                table.addCell(totalCell)
-            }
-        }
-
-        document.add(table)
-
-        val footer = Paragraph("Powered by D_M tech Solutions\nEmail us: murerwadenis55@gmail.com").setFontSize(10f).setTextAlignment(TextAlignment.CENTER).setFontColor(textColor)
-        document.showTextAligned(footer, PageSize.A4.width / 2, document.bottomMargin + 10, TextAlignment.CENTER)
-
-        document.close()
-    }
-
-    private fun notifyDownloadComplete(fileName: String, uri: Uri) {
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("PDF Downloaded")
-            .setContentText("Download complete")
-            .setSmallIcon(R.drawable.ic_download_foreground)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setProgress(0, 0, false)
-            .setOngoing(false)
-            .setAutoCancel(true)
-            .setContentIntent(PendingIntent.getActivity(this, 0, Intent(Intent.ACTION_VIEW).apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    this.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    this.setDataAndType(uri, "application/pdf")
-                } else {
-                    this.setDataAndType(uri, "application/pdf")
-                }
-            }, PendingIntent.FLAG_UPDATE_CURRENT))
-
-        notificationManager.notify(1, builder.build())
-    }
-
-
 
 
 
@@ -427,7 +356,7 @@ class NurseryMarks: AppCompatActivity() {
     }
 
     private fun fetchSavedListData(year: String, term: String, examType: String) {
-        val fileName = "${javaClass.simpleName}_$year" + "_$term" + "_$examType.csv"
+        val fileName = "Grade1Marks_$year" + "_$term" + "_$examType.csv"
         val fileRef = storageRef.child(fileName)
 
         fileRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
@@ -711,7 +640,7 @@ class NurseryMarks: AppCompatActivity() {
         }
 
         val data = studentDataList.joinToString("\n")
-        val fileName = "${javaClass.simpleName}_$year" + "_$term" + "_$examType.csv"
+        val fileName = "Grade1Marks_$year" + "_$term" + "_$examType.csv"
         val storageRef = FirebaseStorage.getInstance().reference.child("csv/student_data.csv/$fileName")
         storageRef.putBytes(data.toByteArray())
             .addOnSuccessListener {
@@ -740,7 +669,7 @@ class NurseryMarks: AppCompatActivity() {
             val selectedYear = spinnerYear.selectedItem.toString()
             val selectedTerm = spinnerTerm.selectedItem.toString()
 
-            val path = "NurseryStudents_${selectedYear}_${selectedTerm}.csv"
+            val path = "Grade1Students_${selectedYear}_${selectedTerm}.csv"
 
 
             fetchStudentsData(path)
@@ -862,7 +791,7 @@ class NurseryMarks: AppCompatActivity() {
     }
 
     companion object {
-        const val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1001
+        private const val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1002
         private const val CHANNEL_ID = "pdf_download_channel"
     }
 }

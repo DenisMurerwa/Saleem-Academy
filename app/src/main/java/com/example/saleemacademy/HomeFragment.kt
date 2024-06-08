@@ -8,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment() {
 
-
+    private lateinit var auth: FirebaseAuth
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +41,7 @@ class HomeFragment : Fragment() {
 override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    auth = FirebaseAuth.getInstance()
 
     val tvAdmin: TextView = view.findViewById(R.id.tvAdmin)
     val tvFees: TextView = view.findViewById(R.id.tvFees)
@@ -48,7 +51,12 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
 
     tvAdmin.setOnClickListener {
-        startActivity(Intent(requireContext(), Admin::class.java))
+        val currentUser = auth.currentUser
+        if (currentUser != null && currentUser.email == "saleemacademy@gmail.com") {
+            startActivity(Intent(requireContext(), Admin::class.java))
+        } else {
+            Toast.makeText(requireContext(), "You are not authorized to access this section", Toast.LENGTH_SHORT).show()
+        }
     }
 
     tvFees.setOnClickListener {

@@ -10,11 +10,7 @@
             android:id="@+id/nav_Home"
             android:icon="@drawable/ic_home_foreground"
             android:title="Home"/>
-        <item
-            android:id="@+id/nav_Contact"
-            android:icon="@drawable/ic_contacts_foreground"
-            android:title="Contacts"/>
-        <item
+               <item
             android:id="@+id/nav_Teachers_Login"
             android:icon="@drawable/ic_login_foreground"
             android:title="Login As A Teacher"/>
@@ -31,7 +27,7 @@
         <item
             android:id="@+id/nav_Feedback"
             android:icon="@drawable/ic_feedback_foreground"
-            android:title="Feedback">
+            android:title="Feedback/Complain">
 
 
 

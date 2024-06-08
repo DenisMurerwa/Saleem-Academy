@@ -37,29 +37,29 @@ class PastPapers : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pastpapers)
 
-        // Initialize Firebase storage reference
+
         storageRef = FirebaseStorage.getInstance().reference.child("PastPapers")
 
-        // Initialize RecyclerView
+
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewPapers)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Initialize an empty list to store the file names
+
         val paperList: MutableList<String> = mutableListOf()
         val folderName = "PastPapers"
 
-        // Fetch the list of files from Firebase Storage
+
         storageRef.listAll()
             .addOnSuccessListener { listResult ->
                 listResult.items.forEach { item ->
-                    // Add each file name to the paperList
+
                     paperList.add(item.name)
                 }
 
-                // Log the paperList for debugging
+
                 Log.d("PastPapers", "Paper List: $paperList")
 
-                // Initialize adapter
+
                 adapter = PastPapersAdapter(this, paperList) { fileName ->
                     downloadFile(fileName)
                 }
@@ -79,7 +79,7 @@ class PastPapers : AppCompatActivity() {
             }
             .addOnFailureListener { exception ->
                 Log.e("PastPapers", "Failed to fetch paper list: ${exception.message}")
-                // Handle failure appropriately, like showing an error message
+
             }
     }
 

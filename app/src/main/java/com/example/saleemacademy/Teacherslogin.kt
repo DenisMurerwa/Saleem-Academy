@@ -2,18 +2,17 @@ package com.example.saleemacademy
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
-
-class Teacherslogin: AppCompatActivity() {
+class Teacherslogin : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
@@ -26,13 +25,11 @@ class Teacherslogin: AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
 
         val btnNavigate: ImageView = findViewById(R.id.ivBack)
-
         btnNavigate.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
-        // Set onClickListeners for class buttons
         val buttons = arrayOf(
             findViewById<Button>(R.id.btn_nursery),
             findViewById<Button>(R.id.btn_grade1),
@@ -47,93 +44,49 @@ class Teacherslogin: AppCompatActivity() {
 
         for (button in buttons) {
             button.setOnClickListener {
-                // Get the class name from the button text
                 val className = button.text.toString()
-
-                // Get the currently logged-in user's email
-                val currentUser = auth.currentUser
-                val currentUserEmail = currentUser?.email
-
-                // Fetch the assigned email for the class from Firebase Storage
-                val classRef = storage.reference.child("emails/grade${getClassGrade(className)}")
-                classRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
-                    val classEmail = String(bytes)
-
-                    // Compare the class email with the logged-in user's email
-                    if (currentUserEmail == classEmail) {
-                        // Open the class
-                        openClass(className)
-                    } else {
-                        // Show a message indicating access denied
-                        Toast.makeText(this, "Access denied", Toast.LENGTH_SHORT).show()
-                    }
-                }.addOnFailureListener { exception ->
-                    Toast.makeText(
-                        this,
-                        "Failed to retrieve class email: ${exception.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                validateUserEmailForClass(className)
             }
         }
     }
 
+    private fun validateUserEmailForClass(className: String) {
+        val currentUser = auth.currentUser
+        val currentUserEmail = currentUser?.email ?: return Toast.makeText(this, "User email is null", Toast.LENGTH_SHORT).show()
+
+        val grade = getClassGrade(className)
+        val classRef = storage.reference.child("emails/grade$grade")
+
+        classRef.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes ->
+            val classEmail = String(bytes, Charsets.UTF_8)
+            if (currentUserEmail == classEmail) {
+                openClass(className)
+            } else {
+                Toast.makeText(this, "Access denied", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener { exception ->
+            Toast.makeText(this, "Failed to retrieve class email: ${exception.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     private fun getClassGrade(className: String): Int {
-
         val parts = className.split(" ")
-
-        return if (parts.size == 2 && parts[0] == "Grade") {
-
-            parts[1].toInt()
-        } else {
-            0
-        }
+        return if (parts.size == 2 && parts[0] == "Grade") parts[1].toInt() else 0
     }
 
-
-    // Function to open the class
     private fun openClass(className: String) {
-        when (className) {
-            "Nursery" -> {
-                val intent = Intent(this, Nursery::class.java)
-                startActivity(intent)
-            }
-
-            "Grade 1" -> {
-                val intent = Intent(this, Grade1::class.java)
-                startActivity(intent)
-            }
-
-            "Grade 2" -> {
-                val intent = Intent(this, Grade2::class.java)
-                startActivity(intent)
-            }
-            "Grade 3" -> {
-                val intent = Intent(this, Grade3::class.java)
-                startActivity(intent)
-            }
-            "Grade 4" -> {
-                val intent = Intent(this, Grade4::class.java)
-                startActivity(intent)
-            }
-            "Grade 5" -> {
-                val intent = Intent(this, Grade5::class.java)
-                startActivity(intent)
-            }
-            "Grade 6" -> {
-                val intent = Intent(this, Grade6::class.java)
-                startActivity(intent)
-            }
-            "Grade 7" -> {
-                val intent = Intent(this, Grade7::class.java)
-                startActivity(intent)
-            }
-            "Grade 8" -> {
-                val intent = Intent(this, Grade8::class.java)
-                startActivity(intent)
-            }
-
+        val intent = when (className) {
+            "Nursery" -> Intent(this, Nursery::class.java)
+            "Grade 1" -> Intent(this, Grade1::class.java)
+            "Grade 2" -> Intent(this, Grade2::class.java)
+            "Grade 3" -> Intent(this, Grade3::class.java)
+            "Grade 4" -> Intent(this, Grade4::class.java)
+            "Grade 5" -> Intent(this, Grade5::class.java)
+            "Grade 6" -> Intent(this, Grade6::class.java)
+            "Grade 7" -> Intent(this, Grade7::class.java)
+            "Grade 8" -> Intent(this, Grade8::class.java)
+            else -> null
         }
+        intent?.let { startActivity(it) }
     }
 }

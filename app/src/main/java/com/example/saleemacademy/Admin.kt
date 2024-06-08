@@ -15,7 +15,7 @@ class Admin: AppCompatActivity() {
         val layoutUploadPastPapers = findViewById<LinearLayout>(R.id.layoutUploadPastPapers)
         val layoutUpdateEvents = findViewById<LinearLayout>(R.id.layoutUpdateEvents)
         val layoutUpdateNotes = findViewById<LinearLayout>(R.id.layoutUpdateNotes)
-        val layoutAddContacts = findViewById<LinearLayout>(R.id.layoutAddContacts)
+
 
         // Set click listeners
         layoutAssignEmails.setOnClickListener {
@@ -34,8 +34,5 @@ class Admin: AppCompatActivity() {
             startActivity(Intent(this, UpdateNotes::class.java))
         }
 
-        layoutAddContacts.setOnClickListener {
-            startActivity(Intent(this, AddContacts::class.java))
-        }
     }
 }

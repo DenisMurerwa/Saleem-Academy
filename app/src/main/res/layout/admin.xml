@@ -123,31 +123,4 @@
 
     </LinearLayout>
 
-    <!-- Add Contacts Section -->
-    <LinearLayout
-        android:id="@+id/layoutAddContacts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layoutUpdateNotes"
-        android:orientation="horizontal"
-        android:background="@drawable/section_background"
-        android:padding="16dp"
-        android:layout_margin="16dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:text="Add Contacts"
-            android:textColor="@color/app_background"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
 </RelativeLayout>
